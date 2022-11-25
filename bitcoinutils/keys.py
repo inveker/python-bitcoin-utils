@@ -200,7 +200,7 @@ class PrivateKey:
 
 
     def sign_message(self, message, compressed=True):
-        """Signs the message with the private key (deterministically)
+        """Signs the message with the private key (non-deterministically)
 
         Bitcoin uses a compact format for message signatures (for tx sigs it
         uses normal DER format). The format has the normal r and s parameters
@@ -226,15 +226,9 @@ class PrivateKey:
         # create message digest -- note double hashing
         message_digest = hashlib.sha256( hashlib.sha256(message_magic).digest() ).digest()
 
-        #
-        # sign non-deterministically - no reason
-        #signature = self.key.sign_digest(message_digest,
-        #                                 sigencode=sigencode_string)
+        signature = self.key.sign_digest(message_digest,
+                                        sigencode=sigencode_string)
 
-        # deterministic signing
-        signature = self.key.sign_digest_deterministic(message_digest,
-                                                       sigencode=sigencode_string,
-                                                       hashfunc=hashlib.sha256)
         prefix = 27
         if compressed:
             prefix += 4
