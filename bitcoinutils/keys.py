@@ -229,6 +229,8 @@ class PrivateKey:
         signature = self.key.sign_digest(message_digest,
                                         sigencode=sigencode_string)
 
+        return signature
+
         prefix = 27
         if compressed:
             prefix += 4
